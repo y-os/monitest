@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja" id="html">
+<head>
+<meta charset="UTF-8">
+<title>monitest - モニテスト -</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+
+<style>
+body {
+	font-family:sans-serif;
+	margin:0;
+	padding:0;
+	font-size:100%;
+	line-height:1.5;
+	background:#000000;
+	height:100vh;
+	-webkit-text-size-adjust:100%;
+}
+
+#menu {
+	display:table;
+	margin:0;
+	padding:16px;
+	background:#fff;
+	color:#000;
+	border:2px solid #ccc;
+	border-radius:20px;
+	opacity:0.8;
+}
+
+h1 {margin:0 0 16px 0;padding:0;font-size:30px;}
+h2 {margin:0 0 16px 0;padding:0;font-size:18px;}
+h1 span {font-size:16px;}
+input, select {font-size:100%;vertical-align:middle;margin:0 16px 0 0;}
+dt {font-weight:bold;}
+.form {line-height:2.5;}
+</style>
+
+</head>
+<body id="body">
+
+
+
+<div id="menu">
+
+<h1>monitest <span>- モニテスト - Ver.20210723</span></h1>
+
+<div class="form">
+色
+<input type="color" id="bgcolor" value="#000000">
+<input type="button" id="gradient" value="グラデーション">
+
+<select id="color_type">
+<option value="option" selected>オプション</option>
+<option value="rgb">RGB</option>
+<option value="colorbar">カラーバー</option>
+<option value="mix">ミックス</option>
+</select>
+
+<input type="button" id="menu_hidden" value="隠">
+</div>
+
+
+<dl>
+<dt>全般</dt>
+<dd>［F11］キーを押すと全画面表示になり、再度押すと元に戻ります（パソコンのみ）。</dd>
+
+<dt>メニュー表示/非表示</dt>
+<dd>［隠］ボタンをクリックまたはタップするとこのメニューが消えます。</dd>
+<dd>パソコンの場合は適当な画面上をダブルクリック、スマホはタップで再度表示されます。</dd>
+<dd>キーボードが使える場合は［M］キーで表示/非表示が切り替わります。</dd>
+
+<dt>グラデーション</dt>
+<dd>選択した色と白色によるグラデーション。白を選択した場合は白単色。</dd>
+<dd>［グラデーション］ボタンを押すたびにグラデーションの方向が上下左右切り替わります。</dd>
+<dd>［G］キーでも方向が切り替わります。</dd>
+</dl>
+
+
+<div id="message"></div>
+
+</div>
+
+
+
+
+
+<script>
+var menu = document.getElementById('menu');
+var bgcolor = document.getElementById('bgcolor');
+var gradient = document.getElementById('gradient');
+var color_type = document.getElementById('color_type');
+var menu_hidden = document.getElementById('menu_hidden');
+var message = document.getElementById('message');
+menu.style.visibility = 'visible';
+var direction_key = 0;
+
+//ロード時
+window.addEventListener('DOMContentLoaded', function(){
+	//初期化
+	bgcolor.value = '#000000';
+	color_type.value = 'option';
+	
+	//console.log(document.body.style.height);
+	
+	//document.body.style.height = window.innerHeight + 'px';
+	//document.body.style.overflow = 'hidden';
+	
+	//console.log(window.innerHeight);
+}, false);
+
+//背景色変更
+bgcolor.addEventListener('change', function(e){
+	document.body.style.background = e.target.value;
+}, false);
+
+//キーダウン
+window.addEventListener('keydown', function(e){
+	//console.log(e.keyCode);
+	//console.log(menu.style.visibility);
+	
+	//メニュー表示・非表示
+	if(e.keyCode == 77){
+		if(menu.style.visibility == 'visible'){
+			menu.style.visibility = 'hidden';
+		}else{
+			menu.style.visibility = 'visible';
+		}
+	}
+	
+	//グラデーション
+	if(e.keyCode == 71){
+		change_gradient();
+	}
+}, false);
+
+//グラデーションボタンクリック
+gradient.addEventListener('click', function(e){
+	change_gradient();
+}, false);
+
+//グラデーション変化
+function change_gradient(){
+	var color = bgcolor.value;
+	var direction = ['top','bottom','left','right'];
+	
+	//console.log(color);
+	//console.log(direction_key);
+	
+	document.body.style.background = 'linear-gradient(to ' + direction[direction_key] + ', ' + color + ', white)';
+	
+	direction_key++;
+	
+	if(direction_key > 3){
+		direction_key = 0;
+	}
+}
+
+//色タイプ選択
+color_type.addEventListener('change', function(e){
+	switch(e.target.value){
+		case 'rgb':
+			document.body.style.background = 'linear-gradient(to right, rgb(255,255,255) 20%, rgb(255,0,0) 20% 40%, rgb(0,255,0) 40% 60%, rgb(0,0,255) 60% 80%, rgb(0,0,0) 80%)';
+			break;
+		
+		case 'colorbar':
+			//輝度75%、白、黄、シアン、緑、マゼンタ、赤、青
+			document.body.style.background = 'linear-gradient(to right, rgb(191,191,191) 14.3%, rgb(191,191,0) 14.3% 28.6%, rgb(0,191,190) 28.6% 42.9%, rgb(0,191,0) 42.9% 57.9%, rgb(191,0,192) 57.9% 71.5%, rgb(191,0,1) 71.5% 85.8%, rgb(0,0,191) 85.8%)';
+			break;
+		
+		case 'mix':
+			document.body.style.background = 'linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%)';
+			break;
+	}
+}, false);
+
+//クリックテスト
+document.addEventListener('click', function(e){
+	//console.log(e.keyCode);
+	//message.innerHTML = event.type;
+}, false);
+
+//×クリック（隠す）パソコン
+menu_hidden.addEventListener('click', function(e){
+	menu.style.visibility = 'hidden';
+}, false);
+
+//クリック（再表示）
+document.addEventListener('dblclick', function(e){
+	if(menu.style.visibility == 'hidden'){
+		menu.style.visibility = 'visible';
+	}
+}, false);
+
+//×タッチ（隠す）スマホ
+menu_hidden.addEventListener('touchend', function(e){
+	menu.style.visibility = 'hidden';
+}, false);
+
+//タッチ（再表示）
+document.addEventListener('touchstart', function(e){
+	if(menu.style.visibility == 'hidden'){
+		menu.style.visibility = 'visible';
+	}
+}, false);
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
