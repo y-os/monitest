@@ -21,6 +21,10 @@ HTMLとJavaScriptのみで作られているので、ウェブブラウザが実
 ウェブブラウザで monitest.html を開いて下さい。
 使い方は monitest.html に記載しています。
 
+GitHub Pages も用意しています。
+https://y-os.github.io/monitest/monitest.html
+
+
 
 
 ## 著作権
