@@ -27,6 +27,10 @@ https://y-os.github.io/monitest/monitest.html
 
 
 
+## 注意事項
+本プログラムを利用して発生したいかなる損害に対して作者は一切の責任を負いません。
+
+
 
 ## 著作権
 Copyright (c) Y.Oshima
